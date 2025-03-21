@@ -1,6 +1,6 @@
 <?php
 
-namespace JorgeCortesDev\SendgridLaravel;
+namespace JorgeCortesDev\SendGridLaravel;
 
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;

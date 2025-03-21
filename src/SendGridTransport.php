@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JorgeCortesDev\SendgridLaravel;
+namespace JorgeCortesDev\SendGridLaravel;
 
 use Exception;
 use Illuminate\Support\Facades\Log;
@@ -25,7 +25,7 @@ class SendGridTransport extends AbstractTransport
     {
         $originalMessage = MessageConverter::toEmail($message->getOriginalMessage());
 
-        $email = new Mail();
+        $email = new Mail;
         $email->setFrom($originalMessage->getFrom()[0]->getAddress(), $originalMessage->getFrom()[0]->getName());
         $email->setSubject($originalMessage->getSubject());
 
