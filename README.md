@@ -1,7 +1,7 @@
 # Sendgrid Laravel
 
 [![Latest Version](https://img.shields.io/packagist/v/jorgecortesdev/sendgrid-laravel.svg?style=flat-square)](https://packagist.org/packages/jorgecortesdev/sendgrid-laravel)
-[![License](https://img.shields.io/packagist/l/jorgecortesdev/sendgrid-laravel.svg?style=flat-square)](LICENSE.md)
+[![License](https://img.shields.io/packagist/l/jorgecortesdev/sendgrid-laravel?style=flat-square&link=LICENSE.md)](LICENSE.md)
 
 A Laravel wrapper for the official [SendGrid PHP library](https://github.com/sendgrid/sendgrid-php), providing a simple and elegant way to send emails through SendGrid in your Laravel applications.
 
