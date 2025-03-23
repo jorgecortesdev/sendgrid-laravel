@@ -43,7 +43,7 @@ class SendGridTransport extends AbstractTransport
 
         if ($response->statusCode() !== 202) {
             $data = json_decode($response->body(), true, 512, JSON_THROW_ON_ERROR);
-            throw new SendEmailException($data['errors'][0]['message'], $response->statusCode());
+            throw SendEmailException::create($data['errors'][0]['message'], $response->statusCode());
         }
     }
 
