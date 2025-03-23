@@ -18,6 +18,7 @@ composer require jorgecortesdev/sendgrid-laravel
 ```
 
 ## Configuration
+it
 
 Update your `.env` file with the SendGrid API key:
 
@@ -30,6 +31,7 @@ Second, add the following configuration to the `config/services.php` file:
 ```php
 'sendgrid' => [
     'api_key' => env('SENDGRID_API_KEY'),
+    'options' => [],
 ],
 ```
 
@@ -38,7 +40,6 @@ Lastly, add the following configuration array to your array of `mailers` in the 
 ```php
 'sendgrid' => [
     'transport' => 'sendgrid',
-    'options' => [],
 ],
 ```
 
@@ -48,6 +49,11 @@ Update your `.env` file with the new mailer:
 
 ```
 MAIL_MAILER=sendgrid
+```
+Don't forget to add a from address does match a verified Sender Identity.
+
+```
+MAIL_FROM_ADDRESS="john@allowed.domain"
 ```
 
 ## License

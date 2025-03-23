@@ -4,22 +4,17 @@ namespace Tests;
 
 use Illuminate\Mail\MailManager;
 use JorgeCortesDev\SendGridLaravel\SendGridTransport;
-use Mockery as m;
 
 class SendGridTransportTest extends TestCase
 {
-    protected function tearDown(): void
-    {
-        m::close();
-
-        parent::tearDown();
-    }
-
     public function test_get_sendgrid_transport(): void
     {
         config()->set('mail.mailers.sendgrid', [
             'transport' => 'sendgrid',
-            'options' => [],
+        ]);
+
+        config()->set('services.sendgrid', [
+            'api_key' => 'test-api-key',
         ]);
 
         $mailManager = $this->app->make(MailManager::class);

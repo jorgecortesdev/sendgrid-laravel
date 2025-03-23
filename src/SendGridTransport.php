@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace JorgeCortesDev\SendGridLaravel;
 
-use Exception;
-use Illuminate\Support\Facades\Log;
+use JorgeCortesDev\SendGridLaravel\Exceptions\SendEmailException;
 use SendGrid;
 use SendGrid\Mail\Mail;
 use Symfony\Component\Mailer\SentMessage;
@@ -24,7 +23,6 @@ class SendGridTransport extends AbstractTransport
     protected function doSend(SentMessage $message): void
     {
         $originalMessage = MessageConverter::toEmail($message->getOriginalMessage());
-
         $email = new Mail;
         $email->setFrom($originalMessage->getFrom()[0]->getAddress(), $originalMessage->getFrom()[0]->getName());
         $email->setSubject($originalMessage->getSubject());
@@ -41,10 +39,11 @@ class SendGridTransport extends AbstractTransport
             $email->addContent('text/html', $originalMessage->getHtmlBody());
         }
 
-        try {
-            $this->sendGrid->send($email);
-        } catch (Exception $e) {
-            Log::error('Caught exception: '.$e->getMessage());
+        $response = $this->sendGrid->send($email);
+
+        if ($response->statusCode() !== 202) {
+            $data = json_decode($response->body(), true, 512, JSON_THROW_ON_ERROR);
+            throw new SendEmailException($data['errors'][0]['message'], $response->statusCode());
         }
     }
 
