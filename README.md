@@ -26,12 +26,14 @@ Update your `.env` file with the SendGrid API key:
 SENDGRID_API_KEY=
 ```
 
-Second, add the following configuration to the `config/services.php` file:
+Second, add the following configuration to the `config/services.php` file. The `data_residency` option can be either 'eu' or 'global':
 
 ```php
 'sendgrid' => [
     'api_key' => env('SENDGRID_API_KEY'),
-    'options' => [],
+    'options' => [
+        'data_residency' => 'global' 
+    ],
 ],
 ```
 
