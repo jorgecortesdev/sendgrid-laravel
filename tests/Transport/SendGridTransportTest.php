@@ -1,9 +1,10 @@
 <?php
 
-namespace Tests;
+namespace Tests\Transport;
 
 use Illuminate\Mail\MailManager;
-use JorgeCortesDev\SendGridLaravel\SendGridTransport;
+use JorgeCortesDev\SendGridLaravel\Transport\SendGridTransport;
+use Tests\TestCase;
 
 class SendGridTransportTest extends TestCase
 {

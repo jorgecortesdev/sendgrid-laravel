@@ -1,34 +1,69 @@
 <?php
 
+declare(strict_types=1);
+
 namespace JorgeCortesDev\SendGridLaravel;
 
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use JorgeCortesDev\SendGridLaravel\Exceptions\ApiKeyIsMissing;
+use JorgeCortesDev\SendGridLaravel\Transport\SendGridTransport;
 use SendGrid;
+use SendGrid\Client as SendGridClient;
 
-class ServiceProvider extends BaseServiceProvider
+/**
+ * @internal
+ */
+class ServiceProvider extends BaseServiceProvider implements DeferrableProvider
 {
+    /**
+     * Register any application services.
+     */
     public function register(): void
     {
-        $this->app->singleton(SendGrid::class, static function (): SendGrid {
+        $this->app->singleton(SendGridClient::class, static function (): SendGridClient {
             $apiKey = config('services.sendgrid.api_key');
-            $options = config('services.sendgrid.options') || [];
+            $options = (array) (config('services.sendgrid.options') ?? []);
 
             if (! is_string($apiKey)) {
                 throw ApiKeyIsMissing::create();
             }
 
-            return new SendGrid($apiKey, $options);
+            $sg = new SendGrid($apiKey, $options);
+
+            if (isset($options['data_residency'])) {
+                $sg->setDataResidency($options['data_residency']);
+            }
+
+            return $sg->client;
         });
+
+        $this->app->alias(SendGridClient::class, 'sendgrid');
     }
 
+    /**
+     * Bootstrap any application services.
+     */
     public function boot(): void
     {
         Mail::extend('sendgrid', static function (array $config) {
-            $sendGrid = app(SendGrid::class);
+            $sendGrid = app(SendGridClient::class);
 
             return new SendGridTransport($sendGrid);
         });
+    }
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array<int, string>
+     */
+    public function provides(): array
+    {
+        return [
+            SendGridClient::class,
+            'sendgrid',
+        ];
     }
 }
