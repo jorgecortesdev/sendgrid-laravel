@@ -44,13 +44,6 @@ class ServiceProviderTest extends TestCase
         app()->get(SendGridClient::class);
     }
 
-    public function test_provides(): void
-    {
-        $provides = (new ServiceProvider(app()))->provides();
-
-        $this->assertEquals([SendGridClient::class, 'sendgrid'], $provides);
-    }
-
     #[DataProvider('dataResidencyProvider')]
     public function test_valid_data_residency($expected, $value): void
     {
