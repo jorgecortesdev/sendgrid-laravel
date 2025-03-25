@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace JorgeCortesDev\SendGridLaravel;
 
-use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use JorgeCortesDev\SendGridLaravel\Exceptions\ApiKeyIsMissing;
@@ -15,7 +14,7 @@ use SendGrid\Client as SendGridClient;
 /**
  * @internal
  */
-class ServiceProvider extends BaseServiceProvider implements DeferrableProvider
+class ServiceProvider extends BaseServiceProvider
 {
     /**
      * Register any application services.
@@ -52,18 +51,5 @@ class ServiceProvider extends BaseServiceProvider implements DeferrableProvider
 
             return new SendGridTransport($sendGrid);
         });
-    }
-
-    /**
-     * Get the services provided by the provider.
-     *
-     * @return array<int, string>
-     */
-    public function provides(): array
-    {
-        return [
-            SendGridClient::class,
-            'sendgrid',
-        ];
     }
 }
